@@ -16,25 +16,15 @@ import javax.persistence.Id;
  * @author henryangminh
  */
 @Entity
-public class Person implements Serializable {
+public class Course implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private String Name;
-    private Integer BirthYear;
-    
-    public Person(String Name, Integer BirthYear){
-        this.Name = Name;
-        this.BirthYear = BirthYear;
-    }
-    
-    public Person(){
-        this.Name = null;
-        this.BirthYear = null;
-    }
+    private String CourseName;
+    private Integer Credit;
 
     public Long getId() {
         return id;
@@ -54,10 +44,10 @@ public class Person implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Person)) {
+        if (!(object instanceof Course)) {
             return false;
         }
-        Person other = (Person) object;
+        Course other = (Course) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -66,7 +56,7 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Person[ id=" + id + " ]";
+        return "Entities.Course[ id=" + id + " ]";
     }
     
 }

@@ -13,15 +13,16 @@ import javax.persistence.*;
  */
 public class Main {
     public static void main(String[] args) {
-        Person p;
+        //Person p;
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/company.odb");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/student.odb");
         EntityManager em = emf.createEntityManager();
         
         em.getTransaction().begin();
         
-        p = new Person("Minh", 1998);
-        em.persist(p);
+        //p = new Person("Minh", 1998);
+        //em.persist(p);
+        em.getMetamodel().entity(Person.class);
         
         em.getTransaction().commit();
         
