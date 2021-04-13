@@ -6,35 +6,26 @@
 package Entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 /**
  *
  * @author henryangminh
  */
 @Entity
-public class Person implements Serializable {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
-    private String Name;
-    private Integer BirthYear;
-    
-    public Person(String Name, Integer BirthYear){
-        this.Name = Name;
-        this.BirthYear = BirthYear;
-    }
-    
-    public Person(){
-        this.Name = null;
-        this.BirthYear = null;
-    }
+    Long id;
 
     public Long getId() {
         return id;
@@ -42,6 +33,20 @@ public class Person implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    private String Name;
+    public String getName() {
+        return Name;
+    }
+    
+    private LocalDate BirthDate;
+    public LocalDate getBirthDate() {
+        return BirthDate;
+    }
+    
+    public Integer calAge() {
+        return LocalDate.now().getYear() - BirthDate.getYear();
     }
 
     @Override
@@ -54,10 +59,10 @@ public class Person implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Person)) {
+        if (!(object instanceof Employee)) {
             return false;
         }
-        Person other = (Person) object;
+        Employee other = (Employee) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -66,7 +71,7 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Person[ id=" + id + " ]";
+        return "Entities.Employee[ id=" + id + " ]";
     }
     
 }

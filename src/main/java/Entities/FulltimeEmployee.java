@@ -16,22 +16,14 @@ import javax.persistence.Id;
  * @author henryangminh
  */
 @Entity
-public class Course implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
-    private String CourseName;
-    private Integer Credit;
-
-    public Long getId() {
-        return id;
+public class FulltimeEmployee extends Employee {
+    private Integer hourlyRate;
+    public Integer getHourlyRate() {
+        return hourlyRate;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setHourlyRate(Integer hourlyRate) {
+        this.hourlyRate = hourlyRate;
     }
 
     @Override
@@ -44,19 +36,16 @@ public class Course implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Course)) {
+        if (!(object instanceof FulltimeEmployee)) {
             return false;
         }
-        Course other = (Course) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        FulltimeEmployee other = (FulltimeEmployee) object;
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
     public String toString() {
-        return "Entities.Course[ id=" + id + " ]";
+        return "Entities.FulltimeEmployee[ id=" + id + " ]";
     }
     
 }
