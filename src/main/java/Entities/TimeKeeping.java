@@ -7,29 +7,23 @@ package Entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.time.LocalDate;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  *
  * @author henryangminh
  */
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public class Employee implements Serializable {
-
+public class TimeKeeping implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
 
     public Long getId() {
         return id;
@@ -39,27 +33,22 @@ public class Employee implements Serializable {
         this.id = id;
     }
     
-    String Name;
-    public String getName() {
-        return Name;
+    private Date CheckIn;
+    private Date CheckOut;
+    
+    @ManyToOne()
+    @JoinColumn(name = "Employee")
+    Employee Employee;
+    
+    public long calWorkingHour() {
+        return CheckOut.getTime() - CheckIn.getTime();
     }
     
-    Date BirthDate;
-    public Date getBirthDate() {
-        return BirthDate;
+    public TimeKeeping(Employee Employee, Date CheckIn, Date CheckOut) {
+        this.Employee = Employee;
+        this.CheckIn = CheckIn;
+        this.CheckOut = CheckOut;
     }
-    
-    public Integer calAge() {
-        return LocalDate.now().getYear() - BirthDate.getYear();
-    }
-    
-    public Employee(String Name, Date BirthDate) {
-        this.Name = Name;
-        this.BirthDate = BirthDate;
-    }
-    
-    @OneToMany(mappedBy = "Employee", cascade = CascadeType.ALL)
-    private Set<TimeKeeping> TimeKeepings;
 
     @Override
     public int hashCode() {
@@ -71,18 +60,18 @@ public class Employee implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Employee)) {
+        if (!(object instanceof TimeKeeping)) {
             return false;
         }
-        Employee other = (Employee) object;
+        TimeKeeping other = (TimeKeeping) object;
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override
     public String toString() {
-        return "id: " + id + 
-                ", Name: " + Name + 
-                ", Birth Date: " + BirthDate.toString();
+        return "Employee Id: " + Employee.id + 
+                ", Check In: " + CheckIn.toString() + 
+                ", Check Out: " + CheckOut.toString();
     }
     
 }

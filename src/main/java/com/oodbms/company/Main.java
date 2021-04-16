@@ -4,27 +4,45 @@
  * and open the template in the editor.
  */
 package com.oodbms.company;
-import javax.persistence.*;
 import Entities.*;
+import Migration.Migration;
+import Repositories.*;
+import java.text.ParseException;
+import java.util.List;
 
 /**
  *
  * @author henryangminh
  */
 public class Main {
-    public static void main(String[] args) {
-        //Person p;
+    public static void main(String[] args) throws ParseException {
+        Migration migration = new Migration();
+        migration.migrate();
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/company.odb");
-        EntityManager em = emf.createEntityManager();
+        EmployeeRepository er = new EmployeeRepository();
+        FulltimeEmployeeRepository fer = new FulltimeEmployeeRepository();
+        ParttimeEmployeeRepository per = new ParttimeEmployeeRepository();
+        TimeKeepingRepository tkr = new TimeKeepingRepository();
+        List<FulltimeEmployee> fes = fer.getAll();
+        List<ParttimeEmployee> pes = per.getAll();
+        List<TimeKeeping> tks = tkr.getAll();
+        List<TimeKeeping> tkga = tkr.getAttendance(er.getById(Long.parseLong("1")));
         
-        em.getTransaction().begin();
+        for (FulltimeEmployee fe : fes) {
+            System.out.println(fe.toString() + ", Year of Exp: " + fe.calExp());
+        }
         
-        //p = new Person("Minh", 1998);
-        //em.persist(p);
-        em.getMetamodel().entity(FulltimeEmployee.class);
+        for (ParttimeEmployee pe : pes) {
+            System.out.println(pe.toString());
+        }
         
-        em.getTransaction().commit();
+        for (TimeKeeping tk : tks) {
+            System.out.println(tk.toString() + ", Working Hours: " + tk.calWorkingHour());
+        }
+        
+        for (TimeKeeping tk : tkga) {
+            System.out.println(tk.toString() + ", Working Hours: " + tk.calWorkingHour());
+        }
         
 //        Query q1 = em.createQuery("SELECT COUNT(p) FROM Person p");
 //        System.out.println("Total Points: " + q1.getSingleResult());

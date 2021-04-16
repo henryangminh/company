@@ -5,11 +5,11 @@
  */
 package Entities;
 
-import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  *
@@ -17,13 +17,34 @@ import javax.persistence.Id;
  */
 @Entity
 public class FulltimeEmployee extends Employee {
-    private Integer hourlyRate;
+    private Integer HourlyRate;
     public Integer getHourlyRate() {
-        return hourlyRate;
+        return HourlyRate;
     }
 
     public void setHourlyRate(Integer hourlyRate) {
-        this.hourlyRate = hourlyRate;
+        this.HourlyRate = hourlyRate;
+    }
+    
+    private Date StartDate;
+    public Date getStartDate() {
+        return StartDate;
+    }
+    
+    public Integer calExp() {
+        Date date = new Date();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        Integer yearNow = calendar.get(Calendar.YEAR); 
+        calendar.setTime(StartDate);
+        Integer yearStart = calendar.get(Calendar.YEAR);
+        return yearNow - yearStart;
+    }
+    
+    public FulltimeEmployee(String Name, Date BirthDate, Integer HourlyRate, Date StartDate) {
+        super(Name, BirthDate);
+        this.HourlyRate = HourlyRate;
+        this.StartDate = StartDate;
     }
 
     @Override
@@ -45,7 +66,9 @@ public class FulltimeEmployee extends Employee {
 
     @Override
     public String toString() {
-        return "Entities.FulltimeEmployee[ id=" + id + " ]";
+        return super.toString() +
+                ", Hourly Rate: " + HourlyRate.toString() +
+                ", Start Date: " + StartDate.toString();
     }
     
 }
