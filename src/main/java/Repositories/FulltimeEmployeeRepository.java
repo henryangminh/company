@@ -25,4 +25,13 @@ public class FulltimeEmployeeRepository {
         );
         return query.getResultList();
     }
+    
+    public FulltimeEmployee getById(Long id) {
+        TypedQuery<FulltimeEmployee> query;
+        query = migration.em.createQuery(
+                "SELECT fe FROM FulltimeEmployee fe WHERE fe.id = " + id.toString(), 
+                FulltimeEmployee.class
+        );
+        return query.getSingleResult();
+    }
 }
